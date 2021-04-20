@@ -74,8 +74,8 @@ router.post('/login', function (req, res) {
     .catch((err) => res.status(500).json({ error: err }));
 });
 
-/* Get Owner with their Address and their Pets */
-//const router = Router();
+/* Get Owner with their Address and their Pets  and Appointments */
+
 router.get('/read', validateSession, function (req, res) {
   User.findAll({
     where: { id: req.user.id },
