@@ -4,15 +4,14 @@ const validateSession = require('../middleware/validate-session');
 const router = Router();
 
 /* Create an Appointment Record */
-router.post('/create', validateSession, function (req, res) {
+router.post('/create/:petid', validateSession, function (req, res) {
   console.log(req.user.id);
   const appointmentEntry = {
-    appointment_date: req.body.appointment_date,
-    appointment_time: req.body.appointment_time,
+    datetime: req.body.datetime,
     note: req.body.note,
     active: req.body.active,
     userId: req.user.id,
-    petId: req.body.petid
+    petId: req.params.petid
   };
   Appointment.create(appointmentEntry)
     .then((appointment) => res.status(200).json(appointment))

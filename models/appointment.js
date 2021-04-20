@@ -2,12 +2,8 @@ const { DataTypes } = require('sequelize');
 const db = require('../db');
 
 const Appointment = db.define('appointment', {
-  date: {
+  datetime: {
     type: DataTypes.DATE,
-    allowNull: false
-  },
-  time: {
-    type: DataTypes.TIME,
     allowNull: false
   },
   note: {

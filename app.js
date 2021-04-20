@@ -16,7 +16,7 @@ app.use(Express.json());
 app.use('/user', controllers.User);
 app.use('/address', controllers.Address);
 app.use('/pet', controllers.Pet);
-app.use('./appointment', controllers.Appointment);
+app.use('/appointment', controllers.Appointment);
 
 // .then(() => db.sync({ force: true }))
 db.authenticate()

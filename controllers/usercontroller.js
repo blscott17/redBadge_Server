@@ -79,7 +79,8 @@ router.post('/login', function (req, res) {
 router.get('/read', validateSession, function (req, res) {
   User.findAll({
     where: { id: req.user.id },
-    include: ['address', 'pet']
+    // include: ['address']
+    include: { all: true }
   }).then(
     function findOneSuccess(data) {
       res.json(data);
