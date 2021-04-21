@@ -11,8 +11,8 @@ router.post('/create', validateSession, function (req, res) {
     city: req.body.city,
     state: req.body.state,
     zipcode: req.body.zipcode,
-    active: req.body.active,
-    userId: req.user.id
+    active: req.body.active
+    // userId: req.user.id 4/20
   };
   Address.create(addressEntry)
     .then((address) => res.status(200).json(address))
@@ -27,7 +27,7 @@ router.put('/update/', validateSession, function (req, res) {
     state: req.body.state,
     zipcode: req.body.zipcode,
     active: req.body.active,
-    ownerId: req.user.id
+    userId: req.user.id
   };
   const query = { where: { id: req.user.id } };
 
@@ -38,7 +38,13 @@ router.put('/update/', validateSession, function (req, res) {
 
 /* ACTUAL DELETE OF ADDRESS ENTRY */
 router.delete('/delete/:id', validateSession, (req, res) => {
-  const query = { where: { id: req.params.id, ownerId: req.user.id } };
+  if (req.user.role !== 'Admin') {
+    res.json({
+      message: 'You do not have rights to delete, contact Administration.'
+    });
+    return;
+  }
+  const query = { where: { id: req.params.id } };
   Address.destroy(query)
     .then((response) =>
       res.status(200).json({

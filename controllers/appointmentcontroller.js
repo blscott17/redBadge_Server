@@ -37,6 +37,12 @@ router.put('/update/', validateSession, function (req, res) {
 
 /* ACTUAL DELETE OF APPOINTMENT ENTRY */
 router.delete('/delete/:id', validateSession, (req, res) => {
+  if (req.user.role !== 'Admin') {
+    res.json({
+      message: 'You do not have rights to delete, contact Administration.'
+    });
+    return;
+  }
   const query = { where: { id: req.params.id, ownerId: req.user.id } };
   Appointment.destroy(query)
     .then((response) =>

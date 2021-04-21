@@ -83,6 +83,12 @@ router.put('/update/:id', validateSession, function (req, res) {
 
 /* ACTUAL DELETE OF PET ENTRY */
 router.delete('/delete/:id', validateSession, (req, res) => {
+  if (req.user.role !== 'Admin') {
+    res.json({
+      message: 'You do not have rights to delete, contact Administration.'
+    });
+    return;
+  }
   const query = { where: { id: req.params.id, ownerId: req.user.id } };
   Pet.destroy(query)
     .then((response) =>
