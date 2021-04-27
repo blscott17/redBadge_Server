@@ -1,8 +1,10 @@
 require('dotenv').config();
 const Express = require('express');
+const cors = require('cors');
 const db = require('./db');
 
 const app = Express();
+app.use(cors());
 
 // Import middlewares as a bundle
 const middlewares = require('./middleware');
