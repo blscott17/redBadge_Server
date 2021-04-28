@@ -16,7 +16,6 @@ const controllers = require('./controllers');
 app.use(Express.json());
 
 app.use('/user', controllers.User);
-app.use('/address', controllers.Address);
 app.use('/pet', controllers.Pet);
 app.use('/appointment', controllers.Appointment);
 
@@ -33,3 +32,5 @@ db.authenticate()
     console.log('[server]: Server Crashed');
     console.log(e);
   });
+
+// app.use('/address', controllers.Address); was belines 18 and 19

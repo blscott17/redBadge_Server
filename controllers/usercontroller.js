@@ -8,18 +8,21 @@ const router = Router();
 /* REGISTER A USER */
 router.post('/create', function (req, res) {
   User.create({
-    username: req.body.username,
+    email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 13),
     firstname: req.body.firstname,
     lastname: req.body.lastname,
-    email: req.body.email,
     phone: req.body.phone,
+    street: req.body.street,
+    city: req.body.city,
+    state: req.body.state,
+    zipcode: req.body.zipcode,
     active: req.body.active,
     role: req.body.role
   })
     .then(function createSuccess(user) {
       let token = jwt.sign(
-        { id: user.id, username: user.username },
+        { id: user.id, email: user.username },
         process.env.JWT_SECRET,
         {
           expiresIn: 60 * 60 * 24
@@ -40,7 +43,7 @@ router.post('/create', function (req, res) {
 router.post('/login', function (req, res) {
   User.findOne({
     where: {
-      username: req.body.username
+      email: req.body.email
     }
   })
     .then(function loginSuccess(user) {
@@ -50,13 +53,9 @@ router.post('/login', function (req, res) {
           user.password,
           function (err, matches) {
             if (matches) {
-              let token = jwt.sign(
-                { id: user.id, username: user.username },
-                process.env.JWT_SECRET,
-                {
-                  expiresIn: 60 * 60 * 24
-                }
-              );
+              let token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+                expiresIn: 60 * 60 * 24
+              });
               res.status(200).json({
                 user: user,
                 message: 'Welcome to Happy Tales Mobile Pet Grooming!',
@@ -74,13 +73,13 @@ router.post('/login', function (req, res) {
     .catch((err) => res.status(500).json({ error: err }));
 });
 
-/* Get Owner with their Address and their Pets  and Appointments */
+/* Get Owner Info with their Pets and Appointments */
 
 router.get('/read', validateSession, function (req, res) {
   User.findAll({
-    where: { id: req.user.id },
+    where: { id: req.user.id }
     // include: ['address']
-    include: { all: true }
+    // include: { all: true }
   }).then(
     function findOneSuccess(data) {
       res.json(data);
@@ -94,12 +93,15 @@ router.get('/read', validateSession, function (req, res) {
 /* UPDATE USER */
 router.put('/update', validateSession, function (req, res) {
   const updateUserEntry = {
-    username: req.body.username,
+    email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 13),
     firstname: req.body.firstname,
     lastname: req.body.lastname,
-    email: req.body.email,
     phone: req.body.phone,
+    street: req.body.street,
+    city: req.body.city,
+    state: req.body.state,
+    zipcode: req.body.zipcode,
     active: req.body.active,
     role: req.body.role
   };
@@ -131,10 +133,4 @@ router.delete('/delete/:id', validateSession, (req, res) => {
 
 module.exports = router;
 
-// .then(function registrationSuccess(user) {
-//   let token = jwt.sign({ id: user.id,
-//   username: user.username }, 'test', {
-
-// let token = jwt.sign(
-//   { id: user.id, username: user.username },
-//   'test',
+// { id: user.id, username: user.username },  previously line 57 took out username
