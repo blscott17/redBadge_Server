@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
     'Origin, X-Requested-With, Content-Type, Accept, Authorization'
   );
 
-  next();
+  return next();
 };
 
 // const CorsMiddleware = (req, res, next) => {
