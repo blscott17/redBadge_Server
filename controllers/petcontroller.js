@@ -72,11 +72,11 @@ router.put('/update/:id', validateSession, function (req, res) {
     hairlength: req.body.hairlength,
     vaccinated: req.body.vaccinated,
     active: req.body.active,
-    ownerId: req.user.id
+    userId: req.user.id
   };
-  const query = { where: { id: req.params.id, ownerId: req.user.id } };
+  const query = { where: { id: req.params.id, userId: req.user.id } };
 
-  Pet.update(updatePetEntry, query)
+  Pet.update(req.body, query)
     .then((pet) => res.status(200).json(pet))
     .catch((err) => res.status(500).json({ error: err }));
 });
