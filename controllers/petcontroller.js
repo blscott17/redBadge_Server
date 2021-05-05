@@ -89,7 +89,7 @@ router.delete('/delete/:id', validateSession, (req, res) => {
     });
     return;
   }
-  const query = { where: { id: req.params.id, ownerId: req.user.id } };
+  const query = { where: { id: req.params.id, userId: req.user.id } };
   Pet.destroy(query)
     .then((response) =>
       res.status(200).json({

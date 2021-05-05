@@ -19,31 +19,30 @@ router.post('/create/:petid', validateSession, function (req, res) {
 });
 
 /*UPDATE INDIVIDUAL APPOINTMENT BY USER|OWNER */
-router.put('/update/', validateSession, function (req, res) {
+router.put('/update/:petid', validateSession, function (req, res) {
   const updateAppointmentEntry = {
-    street: req.body.street,
-    city: req.body.city,
-    state: req.body.state,
-    zipcode: req.body.zipcode,
+    datetime: req.body.datetime,
+    note: req.body.note,
     active: req.body.active,
-    ownerId: req.user.id
+    userId: req.user.id,
+    petId: req.params.petid
   };
-  const query = { where: { id: req.user.id } };
+  const query = { where: { petId: req.params.petid, userId: req.user.id } };
 
-  Appointment.update(updateAppointmentEntry, query)
+  Appointment.update(req.body, query)
     .then((appointment) => res.status(200).json(appointment))
     .catch((err) => res.status(500).json({ error: err }));
 });
 
 /* ACTUAL DELETE OF APPOINTMENT ENTRY */
-router.delete('/delete/:id', validateSession, (req, res) => {
+router.delete('/delete/:petid', validateSession, (req, res) => {
   if (req.user.role !== 'Admin') {
     res.json({
       message: 'You do not have rights to delete, contact Administration.'
     });
     return;
   }
-  const query = { where: { id: req.params.id, ownerId: req.user.id } };
+  const query = { where: { petId: req.params.petid, userId: req.user.id } };
   Appointment.destroy(query)
     .then((response) =>
       res.status(200).json({

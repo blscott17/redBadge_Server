@@ -92,10 +92,9 @@ router.get('/read', validateSession, function (req, res) {
 });
 
 /* UPDATE USER */
-router.put('/update', validateSession, function (req, res) {
+router.put('/update/', validateSession, function (req, res) {
   const updateUserEntry = {
     email: req.body.email,
-    password: bcrypt.hashSync(req.body.password, 13),
     firstname: req.body.firstname,
     lastname: req.body.lastname,
     phone: req.body.phone,
@@ -108,7 +107,7 @@ router.put('/update', validateSession, function (req, res) {
   };
   const query = { where: { id: req.user.id } };
 
-  User.update(updateUserEntry, query)
+  User.update(req.body, query)
     .then((user) => res.status(200).json(user))
     .catch((err) => res.status(500).json({ error: err }));
 });
@@ -135,3 +134,7 @@ router.delete('/delete/:id', validateSession, (req, res) => {
 module.exports = router;
 
 // { id: user.id, username: user.username },  previously line 57 took out username
+// changed line 111 from User.update(updateUserEntry, query)
+// to User.update(req.body, entry)
+// removed line 98 from update user endpoint, see below
+// 98   password: bcrypt.hashSync(req.body.password, 13),

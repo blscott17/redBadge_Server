@@ -24,3 +24,11 @@ module.exports = db;
 // `postgresql://postgres://${encodeURIComponent(process.env.PASS)}`, {
 //   dialect: 'postgres'
 // });
+//When running or pushing to LOCAL comment these lines out.
+//When running or pushing to HEROKU Make SURE these lines are IN.
+// dialectOptions: {
+//   ssl: {
+//     require: true,
+//     rejectUnauthorized: false
+//   }
+// }
