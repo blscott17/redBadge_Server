@@ -48,11 +48,13 @@ router.get('/read', validateSession, function (req, res) {
 //const router = Router();
 router.get('/get', validateSession, function (req, res) {
   Pet.findAll({
-    where: { userId: req.user.id, petId: req.pet.id },
-    include: ['user', 'appointment']
+    // where: { userId: req.user.id, petId: req.pet.id },
+    where: { userId: req.user.id }
+    // include: ['user', 'appointment']
   }).then(
     function findAllSuccess(data) {
       res.json(data);
+      console.log('GET PET', data);
     },
     function findAllError(err) {
       res.send(500, err.message);
