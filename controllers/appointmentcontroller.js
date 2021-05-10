@@ -36,12 +36,12 @@ router.put('/update/:petid', validateSession, function (req, res) {
 
 /* ACTUAL DELETE OF APPOINTMENT ENTRY */
 router.delete('/delete/:petid', validateSession, (req, res) => {
-  if (req.user.role !== 'Admin') {
-    res.json({
-      message: 'You do not have rights to delete, contact Administration.'
-    });
-    return;
-  }
+  // if (req.user.role !== 'Admin') {
+  //   res.json({
+  //     message: 'You do not have rights to delete, contact Administration.'
+  //   });
+  //   return;
+  // }
   const query = { where: { petId: req.params.petid, userId: req.user.id } };
   Appointment.destroy(query)
     .then((response) =>

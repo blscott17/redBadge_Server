@@ -115,12 +115,12 @@ router.put('/update/', validateSession, function (req, res) {
 /* ACTUAL DELETE OF USER|OWNER */
 router.delete('/delete/:id', validateSession, (req, res) => {
   // console.log(req.user.role);
-  if (req.user.role !== 'Admin') {
-    res.json({
-      message: 'You do not have rights to delete, contact Administration.'
-    });
-    return;
-  }
+  // if (req.user.role !== 'Admin') {
+  //   res.json({
+  //     message: 'You do not have rights to delete, contact Administration.'
+  //   });
+  //   return;
+  // }
   const query = { where: { id: req.params.id } };
   User.destroy(query)
     .then((response) =>
